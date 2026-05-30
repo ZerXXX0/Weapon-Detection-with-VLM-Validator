@@ -1,0 +1,8 @@
+datasets
+torch
+transformers
+peft
+bitsandbytes
+accelerate
+pillow
+scikit-learn

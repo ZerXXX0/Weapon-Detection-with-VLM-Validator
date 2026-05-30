@@ -5,8 +5,8 @@ qwen_vl_model_smoke/
 qwen_vl_model_smoke_50/
 qwen_vl_model_smoke_100/
 qwen_vl_model_smoke_300/
-qwen_vl_model_smoke_temp/
-wapon VLM dataset/
+qwen_vl_smoke_temp/
+weapon VLM dataset/
 .venv/
-.zip
+weapon VLM dataset.zip
 .pt
