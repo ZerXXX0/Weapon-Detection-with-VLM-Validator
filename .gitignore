@@ -1,12 +1,36 @@
-qwen_vl_model/
-qwen_vl_model_eval/
-qwen_vl_model_full/
-qwen_vl_model_smoke/
-qwen_vl_model_smoke_50/
-qwen_vl_model_smoke_100/
-qwen_vl_model_smoke_300/
-qwen_vl_smoke_temp/
-weapon VLM dataset/
+# Python / Environment / Cache
 .venv/
-weapon VLM dataset.zip
-.pt
+venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Heavy Model Weights & Model Directories
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+*.engine
+qwen*_vl_model*/
+qwen_vl_model*/
+qwen_vl_smoke*/
+
+# Datasets & Archives
+1-class-weapon-dataset*/
+2-class-weapon-dataset*/
+weapon VLM dataset*/
+Dataset Annotation*/
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+test.json
+train.json
+val.json
+valid.json
+
+# Large Annotated Inference Images (Heavy media outputs)
+inference_results*/
+test_inference_results*/

@@ -1,0 +1,28 @@
+============================================================
+ JOINT YOLO + VLM EVALUATION COMPARISON REPORT
+============================================================
+
+============================================================
+ MODEL REPORT: yolo12n_best
+============================================================
+YOLO Model Weights : runs/detect/yolo12n/weights/best.pt
+Qwen-VL Adapter    : qwen_vl_model_full3_ra1632
+Total Test Images  : 10
+Annotated Images   : inference_results\yolo12n_best
+------------------------------------------------------------
+Metric                    | YOLO Only    | YOLO + VLM   | Difference
+------------------------------------------------------------
+mAP50 (IoU=0.50)          | 0.1089       | 0.0248       | -0.0842
+mAP75 (IoU=0.75)          | 0.0155       | 0.0248       | +0.0093
+mAP50-95 (COCO)           | 0.0437       | 0.0188       | -0.0249
+Precision                 | 0.4074       | 0.3333       | -0.0741
+Recall                    | 0.2292       | 0.0417       | -0.1875
+------------------------------------------------------------
+Total True Positives (TP) : 11           | 2            | Difference: -9
+Total False Positives (FP): 16           | 4            | Difference: -12
+False Positives / Image   : 1.6000       | 0.4000       | Difference: -1.2000
+Total False Negatives (FN): 37           | 46           | Difference: 9
+------------------------------------------------------------
+==> False Positive Reduction Rate: 75.00%
+============================================================
+

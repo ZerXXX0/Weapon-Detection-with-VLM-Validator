@@ -1,0 +1,52 @@
+============================================================
+ JOINT YOLO + VLM EVALUATION COMPARISON REPORT
+============================================================
+
+============================================================
+ MODEL REPORT: yolo12n_best
+============================================================
+YOLO Model Weights : runs/detect/yolo12n/weights/best.pt
+Qwen-VL Adapter    : qwen_vl_model_full3_ra1632
+Total Test Images  : 2
+Annotated Images   : test_inference_results\yolo12n_best
+------------------------------------------------------------
+Metric                    | YOLO Only    | YOLO + VLM   | Difference
+------------------------------------------------------------
+mAP50 (IoU=0.50)          | 0.0495       | 0.0000       | -0.0495
+mAP75 (IoU=0.75)          | 0.0000       | 0.0000       | +0.0000
+mAP50-95 (COCO)           | 0.0198       | 0.0000       | -0.0198
+Precision                 | 0.1667       | 0.0000       | -0.1667
+Recall                    | 0.1429       | 0.0000       | -0.1429
+------------------------------------------------------------
+Total True Positives (TP) : 1            | 0            | Difference: -1
+Total False Positives (FP): 5            | 1            | Difference: -4
+False Positives / Image   : 2.5000       | 0.5000       | Difference: -2.0000
+Total False Negatives (FN): 6            | 7            | Difference: 1
+------------------------------------------------------------
+==> False Positive Reduction Rate: 80.00%
+============================================================
+
+============================================================
+ MODEL REPORT: yolo12s_best
+============================================================
+YOLO Model Weights : runs/detect/yolo12s/weights/best.pt
+Qwen-VL Adapter    : qwen_vl_model_full3_ra1632
+Total Test Images  : 2
+Annotated Images   : test_inference_results\yolo12s_best
+------------------------------------------------------------
+Metric                    | YOLO Only    | YOLO + VLM   | Difference
+------------------------------------------------------------
+mAP50 (IoU=0.50)          | 0.2554       | 0.2871       | +0.0317
+mAP75 (IoU=0.75)          | 0.0000       | 0.0000       | +0.0000
+mAP50-95 (COCO)           | 0.0911       | 0.1010       | +0.0099
+Precision                 | 0.6000       | 1.0000       | +0.4000
+Recall                    | 0.4286       | 0.2857       | -0.1429
+------------------------------------------------------------
+Total True Positives (TP) : 3            | 2            | Difference: -1
+Total False Positives (FP): 2            | 0            | Difference: -2
+False Positives / Image   : 1.0000       | 0.0000       | Difference: -1.0000
+Total False Negatives (FN): 4            | 5            | Difference: 1
+------------------------------------------------------------
+==> False Positive Reduction Rate: 100.00%
+============================================================
+
