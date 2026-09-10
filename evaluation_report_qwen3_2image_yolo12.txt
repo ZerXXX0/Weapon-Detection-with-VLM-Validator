@@ -1,0 +1,124 @@
+============================================================
+ JOINT YOLO12 + DUAL-IMAGE VLM EVALUATION COMPARISON REPORT
+============================================================
+
+============================================================
+ MODEL REPORT: yolo12n_best
+============================================================
+YOLO Model Weights : runs/detect/yolo12n/weights/best.pt
+Qwen-VL Adapter    : qwen3_vl_model_2image
+Total Test Images  : 1030
+Annotated Images   : inference_results_qwen3_2image_yolo12\yolo12n_best
+------------------------------------------------------------
+Metric                    | YOLO12 Only  | YOLO12 + 2Img VLM | Difference
+------------------------------------------------------------
+mAP50 (IoU=0.50)          | 0.0430       | 0.0347          | -0.0084
+mAP75 (IoU=0.75)          | 0.0120       | 0.0113          | -0.0007
+mAP50-95 (COCO)           | 0.0162       | 0.0131          | -0.0031
+Precision                 | 0.1965       | 0.1908          | -0.0057
+Recall                    | 0.1780       | 0.1347          | -0.0433
+------------------------------------------------------------
+Total True Positives (TP) : 300          | 227             | Difference: -73
+Total False Positives (FP): 1227         | 963             | Difference: -264
+False Positives / Image   : 1.1913       | 0.9350          | Difference: -0.2563
+Total False Negatives (FN): 1385         | 1458            | Difference: 73
+------------------------------------------------------------
+==> False Positive Reduction Rate: 21.52%
+============================================================
+
+============================================================
+ MODEL REPORT: yolo12s_best
+============================================================
+YOLO Model Weights : runs/detect/yolo12s/weights/best.pt
+Qwen-VL Adapter    : qwen3_vl_model_2image
+Total Test Images  : 1030
+Annotated Images   : inference_results_qwen3_2image_yolo12\yolo12s_best
+------------------------------------------------------------
+Metric                    | YOLO12 Only  | YOLO12 + 2Img VLM | Difference
+------------------------------------------------------------
+mAP50 (IoU=0.50)          | 0.1450       | 0.1305          | -0.0145
+mAP75 (IoU=0.75)          | 0.0228       | 0.0204          | -0.0024
+mAP50-95 (COCO)           | 0.0502       | 0.0455          | -0.0047
+Precision                 | 0.5591       | 0.5668          | +0.0077
+Recall                    | 0.1852       | 0.1662          | -0.0190
+------------------------------------------------------------
+Total True Positives (TP) : 312          | 280             | Difference: -32
+Total False Positives (FP): 246          | 214             | Difference: -32
+False Positives / Image   : 0.2388       | 0.2078          | Difference: -0.0311
+Total False Negatives (FN): 1373         | 1405            | Difference: 32
+------------------------------------------------------------
+==> False Positive Reduction Rate: 13.01%
+============================================================
+
+============================================================
+ MODEL REPORT: yolo12m_best
+============================================================
+YOLO Model Weights : runs/detect/yolo12m/weights/best.pt
+Qwen-VL Adapter    : qwen3_vl_model_2image
+Total Test Images  : 1030
+Annotated Images   : inference_results_qwen3_2image_yolo12\yolo12m_best
+------------------------------------------------------------
+Metric                    | YOLO12 Only  | YOLO12 + 2Img VLM | Difference
+------------------------------------------------------------
+mAP50 (IoU=0.50)          | 0.0640       | 0.0442          | -0.0197
+mAP75 (IoU=0.75)          | 0.0123       | 0.0110          | -0.0013
+mAP50-95 (COCO)           | 0.0240       | 0.0179          | -0.0061
+Precision                 | 0.2004       | 0.1766          | -0.0238
+Recall                    | 0.1739       | 0.1234          | -0.0504
+------------------------------------------------------------
+Total True Positives (TP) : 293          | 208             | Difference: -85
+Total False Positives (FP): 1169         | 970             | Difference: -199
+False Positives / Image   : 1.1350       | 0.9417          | Difference: -0.1932
+Total False Negatives (FN): 1392         | 1477            | Difference: 85
+------------------------------------------------------------
+==> False Positive Reduction Rate: 17.02%
+============================================================
+
+============================================================
+ MODEL REPORT: yolo12l_best
+============================================================
+YOLO Model Weights : runs/detect/yolo12l/weights/best.pt
+Qwen-VL Adapter    : qwen3_vl_model_2image
+Total Test Images  : 1030
+Annotated Images   : inference_results_qwen3_2image_yolo12\yolo12l_best
+------------------------------------------------------------
+Metric                    | YOLO12 Only  | YOLO12 + 2Img VLM | Difference
+------------------------------------------------------------
+mAP50 (IoU=0.50)          | 0.1467       | 0.1363          | -0.0104
+mAP75 (IoU=0.75)          | 0.0146       | 0.0143          | -0.0004
+mAP50-95 (COCO)           | 0.0445       | 0.0409          | -0.0035
+Precision                 | 0.4769       | 0.5200          | +0.0431
+Recall                    | 0.1840       | 0.1697          | -0.0142
+------------------------------------------------------------
+Total True Positives (TP) : 310          | 286             | Difference: -24
+Total False Positives (FP): 340          | 264             | Difference: -76
+False Positives / Image   : 0.3301       | 0.2563          | Difference: -0.0738
+Total False Negatives (FN): 1375         | 1399            | Difference: 24
+------------------------------------------------------------
+==> False Positive Reduction Rate: 22.35%
+============================================================
+
+============================================================
+ MODEL REPORT: yolo12x_best
+============================================================
+YOLO Model Weights : runs/detect/yolo12x/weights/best.pt
+Qwen-VL Adapter    : qwen3_vl_model_2image
+Total Test Images  : 1030
+Annotated Images   : inference_results_qwen3_2image_yolo12\yolo12x_best
+------------------------------------------------------------
+Metric                    | YOLO12 Only  | YOLO12 + 2Img VLM | Difference
+------------------------------------------------------------
+mAP50 (IoU=0.50)          | 0.1135       | 0.1050          | -0.0085
+mAP75 (IoU=0.75)          | 0.0164       | 0.0163          | -0.0001
+mAP50-95 (COCO)           | 0.0404       | 0.0377          | -0.0028
+Precision                 | 0.7778       | 0.7901          | +0.0123
+Recall                    | 0.1246       | 0.1139          | -0.0107
+------------------------------------------------------------
+Total True Positives (TP) : 210          | 192             | Difference: -18
+Total False Positives (FP): 60           | 51              | Difference: -9
+False Positives / Image   : 0.0583       | 0.0495          | Difference: -0.0087
+Total False Negatives (FN): 1475         | 1493            | Difference: 18
+------------------------------------------------------------
+==> False Positive Reduction Rate: 15.00%
+============================================================
+
