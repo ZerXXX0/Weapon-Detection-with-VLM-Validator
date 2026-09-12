@@ -12,18 +12,18 @@ Annotated Images   : inference_results\yolo12n_best
 ------------------------------------------------------------
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
-mAP50 (IoU=0.50)          | 0.0430       | 0.0472       | +0.0042
+mAP50 (IoU=0.50)          | 0.0430       | 0.0473       | +0.0043
 mAP75 (IoU=0.75)          | 0.0120       | 0.0122       | +0.0002
-mAP50-95 (COCO)           | 0.0162       | 0.0171       | +0.0010
-Precision                 | 0.1965       | 0.2210       | +0.0246
-Recall                    | 0.1780       | 0.1733       | -0.0047
+mAP50-95 (COCO)           | 0.0162       | 0.0172       | +0.0010
+Precision                 | 0.1965       | 0.2215       | +0.0250
+Recall                    | 0.1780       | 0.1715       | -0.0065
 ------------------------------------------------------------
-Total True Positives (TP) : 300          | 292          | Difference: -8
-Total False Positives (FP): 1227         | 1029         | Difference: -198
-False Positives / Image   : 1.1913       | 0.9990       | Difference: -0.1922
-Total False Negatives (FN): 1385         | 1393         | Difference: 8
+Total True Positives (TP) : 300          | 289          | Difference: -11
+Total False Positives (FP): 1227         | 1016         | Difference: -211
+False Positives / Image   : 1.1913       | 0.9864       | Difference: -0.2049
+Total False Negatives (FN): 1385         | 1396         | Difference: 11
 ------------------------------------------------------------
-==> False Positive Reduction Rate: 16.14%
+==> False Positive Reduction Rate: 17.20%
 ============================================================
 
 ============================================================
@@ -36,18 +36,18 @@ Annotated Images   : inference_results\yolo12s_best
 ------------------------------------------------------------
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
-mAP50 (IoU=0.50)          | 0.1450       | 0.1382       | -0.0068
-mAP75 (IoU=0.75)          | 0.0228       | 0.0205       | -0.0023
-mAP50-95 (COCO)           | 0.0502       | 0.0480       | -0.0022
-Precision                 | 0.5591       | 0.5685       | +0.0093
-Recall                    | 0.1852       | 0.1798       | -0.0053
+mAP50 (IoU=0.50)          | 0.1450       | 0.1439       | -0.0011
+mAP75 (IoU=0.75)          | 0.0228       | 0.0227       | -0.0001
+mAP50-95 (COCO)           | 0.0502       | 0.0493       | -0.0009
+Precision                 | 0.5591       | 0.5651       | +0.0059
+Recall                    | 0.1852       | 0.1804       | -0.0047
 ------------------------------------------------------------
-Total True Positives (TP) : 312          | 303          | Difference: -9
-Total False Positives (FP): 246          | 230          | Difference: -16
-False Positives / Image   : 0.2388       | 0.2233       | Difference: -0.0155
-Total False Negatives (FN): 1373         | 1382         | Difference: 9
+Total True Positives (TP) : 312          | 304          | Difference: -8
+Total False Positives (FP): 246          | 234          | Difference: -12
+False Positives / Image   : 0.2388       | 0.2272       | Difference: -0.0117
+Total False Negatives (FN): 1373         | 1381         | Difference: 8
 ------------------------------------------------------------
-==> False Positive Reduction Rate: 6.50%
+==> False Positive Reduction Rate: 4.88%
 ============================================================
 
 ============================================================
@@ -60,18 +60,18 @@ Annotated Images   : inference_results\yolo12m_best
 ------------------------------------------------------------
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
-mAP50 (IoU=0.50)          | 0.0640       | 0.0684       | +0.0044
+mAP50 (IoU=0.50)          | 0.0640       | 0.0675       | +0.0035
 mAP75 (IoU=0.75)          | 0.0123       | 0.0125       | +0.0002
-mAP50-95 (COCO)           | 0.0240       | 0.0251       | +0.0011
-Precision                 | 0.2004       | 0.2263       | +0.0259
-Recall                    | 0.1739       | 0.1715       | -0.0024
+mAP50-95 (COCO)           | 0.0240       | 0.0248       | +0.0008
+Precision                 | 0.2004       | 0.2227       | +0.0223
+Recall                    | 0.1739       | 0.1709       | -0.0030
 ------------------------------------------------------------
-Total True Positives (TP) : 293          | 289          | Difference: -4
-Total False Positives (FP): 1169         | 988          | Difference: -181
-False Positives / Image   : 1.1350       | 0.9592       | Difference: -0.1757
-Total False Negatives (FN): 1392         | 1396         | Difference: 4
+Total True Positives (TP) : 293          | 288          | Difference: -5
+Total False Positives (FP): 1169         | 1005         | Difference: -164
+False Positives / Image   : 1.1350       | 0.9757       | Difference: -0.1592
+Total False Negatives (FN): 1392         | 1397         | Difference: 5
 ------------------------------------------------------------
-==> False Positive Reduction Rate: 15.48%
+==> False Positive Reduction Rate: 14.03%
 ============================================================
 
 ============================================================
@@ -85,17 +85,17 @@ Annotated Images   : inference_results\yolo12l_best
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
 mAP50 (IoU=0.50)          | 0.1467       | 0.1402       | -0.0064
-mAP75 (IoU=0.75)          | 0.0146       | 0.0146       | -0.0000
-mAP50-95 (COCO)           | 0.0445       | 0.0428       | -0.0016
-Precision                 | 0.4769       | 0.4951       | +0.0181
-Recall                    | 0.1840       | 0.1786       | -0.0053
+mAP75 (IoU=0.75)          | 0.0146       | 0.0145       | -0.0001
+mAP50-95 (COCO)           | 0.0445       | 0.0428       | -0.0017
+Precision                 | 0.4769       | 0.4887       | +0.0118
+Recall                    | 0.1840       | 0.1798       | -0.0042
 ------------------------------------------------------------
-Total True Positives (TP) : 310          | 301          | Difference: -9
-Total False Positives (FP): 340          | 307          | Difference: -33
-False Positives / Image   : 0.3301       | 0.2981       | Difference: -0.0320
-Total False Negatives (FN): 1375         | 1384         | Difference: 9
+Total True Positives (TP) : 310          | 303          | Difference: -7
+Total False Positives (FP): 340          | 317          | Difference: -23
+False Positives / Image   : 0.3301       | 0.3078       | Difference: -0.0223
+Total False Negatives (FN): 1375         | 1382         | Difference: 7
 ------------------------------------------------------------
-==> False Positive Reduction Rate: 9.71%
+==> False Positive Reduction Rate: 6.76%
 ============================================================
 
 ============================================================
@@ -108,16 +108,16 @@ Annotated Images   : inference_results\yolo12x_best
 ------------------------------------------------------------
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
-mAP50 (IoU=0.50)          | 0.1135       | 0.1139       | +0.0004
+mAP50 (IoU=0.50)          | 0.1135       | 0.1136       | +0.0001
 mAP75 (IoU=0.75)          | 0.0164       | 0.0163       | -0.0001
-mAP50-95 (COCO)           | 0.0404       | 0.0405       | +0.0001
-Precision                 | 0.7778       | 0.7833       | +0.0055
-Recall                    | 0.1246       | 0.1223       | -0.0024
+mAP50-95 (COCO)           | 0.0404       | 0.0397       | -0.0007
+Precision                 | 0.7778       | 0.7824       | +0.0047
+Recall                    | 0.1246       | 0.1217       | -0.0030
 ------------------------------------------------------------
-Total True Positives (TP) : 210          | 206          | Difference: -4
+Total True Positives (TP) : 210          | 205          | Difference: -5
 Total False Positives (FP): 60           | 57           | Difference: -3
 False Positives / Image   : 0.0583       | 0.0553       | Difference: -0.0029
-Total False Negatives (FN): 1475         | 1479         | Difference: 4
+Total False Negatives (FN): 1475         | 1480         | Difference: 5
 ------------------------------------------------------------
 ==> False Positive Reduction Rate: 5.00%
 ============================================================

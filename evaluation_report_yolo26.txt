@@ -12,18 +12,18 @@ Annotated Images   : inference_results_yolo26\yolo26n_best
 ------------------------------------------------------------
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
-mAP50 (IoU=0.50)          | 0.1046       | 0.1054       | +0.0008
-mAP75 (IoU=0.75)          | 0.0197       | 0.0183       | -0.0014
-mAP50-95 (COCO)           | 0.0410       | 0.0411       | +0.0001
-Precision                 | 0.4465       | 0.4619       | +0.0155
-Recall                    | 0.1585       | 0.1549       | -0.0036
+mAP50 (IoU=0.50)          | 0.1046       | 0.1057       | +0.0011
+mAP75 (IoU=0.75)          | 0.0197       | 0.0180       | -0.0017
+mAP50-95 (COCO)           | 0.0410       | 0.0401       | -0.0009
+Precision                 | 0.4465       | 0.4577       | +0.0113
+Recall                    | 0.1585       | 0.1543       | -0.0042
 ------------------------------------------------------------
-Total True Positives (TP) : 267          | 261          | Difference: -6
-Total False Positives (FP): 331          | 304          | Difference: -27
-False Positives / Image   : 0.3214       | 0.2951       | Difference: -0.0262
-Total False Negatives (FN): 1418         | 1424         | Difference: 6
+Total True Positives (TP) : 267          | 260          | Difference: -7
+Total False Positives (FP): 331          | 308          | Difference: -23
+False Positives / Image   : 0.3214       | 0.2990       | Difference: -0.0223
+Total False Negatives (FN): 1418         | 1425         | Difference: 7
 ------------------------------------------------------------
-==> False Positive Reduction Rate: 8.16%
+==> False Positive Reduction Rate: 6.95%
 ============================================================
 
 ============================================================
@@ -36,9 +36,9 @@ Annotated Images   : inference_results_yolo26\yolo26s_best
 ------------------------------------------------------------
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
-mAP50 (IoU=0.50)          | 0.0826       | 0.0825       | -0.0001
-mAP75 (IoU=0.75)          | 0.0182       | 0.0147       | -0.0034
-mAP50-95 (COCO)           | 0.0320       | 0.0316       | -0.0005
+mAP50 (IoU=0.50)          | 0.0826       | 0.0826       | -0.0001
+mAP75 (IoU=0.75)          | 0.0182       | 0.0182       | +0.0000
+mAP50-95 (COCO)           | 0.0320       | 0.0321       | +0.0000
 Precision                 | 0.7886       | 0.7874       | -0.0012
 Recall                    | 0.0819       | 0.0813       | -0.0006
 ------------------------------------------------------------
@@ -61,17 +61,17 @@ Annotated Images   : inference_results_yolo26\yolo26m_best
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
 mAP50 (IoU=0.50)          | 0.1672       | 0.1670       | -0.0001
-mAP75 (IoU=0.75)          | 0.0355       | 0.0356       | +0.0001
-mAP50-95 (COCO)           | 0.0667       | 0.0667       | +0.0000
-Precision                 | 0.6810       | 0.6827       | +0.0017
-Recall                    | 0.1976       | 0.1941       | -0.0036
+mAP75 (IoU=0.75)          | 0.0355       | 0.0357       | +0.0001
+mAP50-95 (COCO)           | 0.0667       | 0.0668       | +0.0002
+Precision                 | 0.6810       | 0.6832       | +0.0022
+Recall                    | 0.1976       | 0.1958       | -0.0018
 ------------------------------------------------------------
-Total True Positives (TP) : 333          | 327          | Difference: -6
-Total False Positives (FP): 156          | 152          | Difference: -4
-False Positives / Image   : 0.1515       | 0.1476       | Difference: -0.0039
-Total False Negatives (FN): 1352         | 1358         | Difference: 6
+Total True Positives (TP) : 333          | 330          | Difference: -3
+Total False Positives (FP): 156          | 153          | Difference: -3
+False Positives / Image   : 0.1515       | 0.1485       | Difference: -0.0029
+Total False Negatives (FN): 1352         | 1355         | Difference: 3
 ------------------------------------------------------------
-==> False Positive Reduction Rate: 2.56%
+==> False Positive Reduction Rate: 1.92%
 ============================================================
 
 ============================================================
@@ -84,18 +84,18 @@ Annotated Images   : inference_results_yolo26\yolo26l_best
 ------------------------------------------------------------
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
-mAP50 (IoU=0.50)          | 0.0929       | 0.0913       | -0.0016
-mAP75 (IoU=0.75)          | 0.0202       | 0.0202       | -0.0001
-mAP50-95 (COCO)           | 0.0365       | 0.0362       | -0.0003
-Precision                 | 0.1965       | 0.2187       | +0.0222
-Recall                    | 0.1852       | 0.1780       | -0.0071
+mAP50 (IoU=0.50)          | 0.0929       | 0.0921       | -0.0008
+mAP75 (IoU=0.75)          | 0.0202       | 0.0205       | +0.0003
+mAP50-95 (COCO)           | 0.0365       | 0.0366       | +0.0001
+Precision                 | 0.1965       | 0.2188       | +0.0223
+Recall                    | 0.1852       | 0.1786       | -0.0065
 ------------------------------------------------------------
-Total True Positives (TP) : 312          | 300          | Difference: -12
-Total False Positives (FP): 1276         | 1072         | Difference: -204
-False Positives / Image   : 1.2388       | 1.0408       | Difference: -0.1981
-Total False Negatives (FN): 1373         | 1385         | Difference: 12
+Total True Positives (TP) : 312          | 301          | Difference: -11
+Total False Positives (FP): 1276         | 1075         | Difference: -201
+False Positives / Image   : 1.2388       | 1.0437       | Difference: -0.1951
+Total False Negatives (FN): 1373         | 1384         | Difference: 11
 ------------------------------------------------------------
-==> False Positive Reduction Rate: 15.99%
+==> False Positive Reduction Rate: 15.75%
 ============================================================
 
 ============================================================
@@ -108,17 +108,17 @@ Annotated Images   : inference_results_yolo26\yolo26x_best
 ------------------------------------------------------------
 Metric                    | YOLO Only    | YOLO + VLM   | Difference
 ------------------------------------------------------------
-mAP50 (IoU=0.50)          | 0.1539       | 0.1470       | -0.0069
-mAP75 (IoU=0.75)          | 0.0162       | 0.0161       | -0.0001
-mAP50-95 (COCO)           | 0.0480       | 0.0461       | -0.0019
-Precision                 | 0.6255       | 0.6218       | -0.0037
-Recall                    | 0.1804       | 0.1757       | -0.0047
+mAP50 (IoU=0.50)          | 0.1539       | 0.1463       | -0.0076
+mAP75 (IoU=0.75)          | 0.0162       | 0.0160       | -0.0001
+mAP50-95 (COCO)           | 0.0480       | 0.0461       | -0.0020
+Precision                 | 0.6255       | 0.6224       | -0.0032
+Recall                    | 0.1804       | 0.1751       | -0.0053
 ------------------------------------------------------------
-Total True Positives (TP) : 304          | 296          | Difference: -8
-Total False Positives (FP): 182          | 180          | Difference: -2
-False Positives / Image   : 0.1767       | 0.1748       | Difference: -0.0019
-Total False Negatives (FN): 1381         | 1389         | Difference: 8
+Total True Positives (TP) : 304          | 295          | Difference: -9
+Total False Positives (FP): 182          | 179          | Difference: -3
+False Positives / Image   : 0.1767       | 0.1738       | Difference: -0.0029
+Total False Negatives (FN): 1381         | 1390         | Difference: 9
 ------------------------------------------------------------
-==> False Positive Reduction Rate: 1.10%
+==> False Positive Reduction Rate: 1.65%
 ============================================================
 
