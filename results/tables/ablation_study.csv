@@ -1,0 +1,5 @@
+config_id,name,routing,context_mode,crop_margin,vlm_model,invocation_rate_pct,tp,fp,fn,precision,recall,f1_score,map50,map50_95,fp_eliminated,fn_introduced,fprr_percent,fnir_percent,latency_ms,p95_latency_ms,fps,peak_vram_mb
+A,Base Detector Only,None (Direct Cutoff ≥ 0.25),None,0%,N/A,0.0,304,182,1381,0.6255,0.1804,0.28,0.1539,0.048,0,0,0.0,0.0,27.6,35.9,36.2,3390
+B,Always-On VLM (Single-Image),Always-On (100%),Single-Image (Full Scene),0%,Qwen3-VL-8B,100.0,295,179,1390,0.6224,0.1751,0.2733,0.1463,0.0456,3,9,1.65,0.65,65.3,84.9,15.3,7436
+C,Routing + VLM (Single-Image),"Zone [0.25, 0.75] (58.2%)",Single-Image (Full Scene),0%,Qwen3-VL-8B,58.2,300,178,1385,0.628,0.178,0.2774,0.15,0.0467,4,4,2.2,0.29,37.8,49.1,26.5,7436
+D,Proposed: Routing + VLM (Dual-Image),"Zone [0.25, 0.75] (58.2%)",Dual-Image (Scene + Crop +20%),+20%,Qwen3-VL-8B,58.2,290,148,1395,0.6621,0.1721,0.2732,0.1532,0.0478,34,14,18.68,1.01,44.1,57.3,22.7,8250

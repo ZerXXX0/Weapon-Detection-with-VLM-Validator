@@ -1,0 +1,22 @@
+name: "RT-DETR"
+type: "ultralytics_rtdetr"
+variants:
+  l:
+    pretrained: "rtdetr-l.pt"
+    run_path: "runs/detect/rtdetr_l"
+    params: 32000000
+    batch_size: 8
+  x:
+    pretrained: "rtdetr-x.pt"
+    run_path: "runs/detect/rtdetr_x"
+    params: 67000000
+    batch_size: 4
+inference:
+  imgsz: 640
+  conf: 0.25
+  iou: 0.45
+  device: "cuda"
+dataset:
+  data_yaml: "1-class-weapon-dataset-2/data.yaml"
+  num_classes: 1
+  classes: ["weapon"]

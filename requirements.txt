@@ -1,8 +1,12 @@
-datasets
+--extra-index-url https://download.pytorch.org/whl/cu128
 torch
+torchvision
 transformers
 peft
 bitsandbytes
 accelerate
+datasets
 pillow
 scikit-learn
+ultralytics
+

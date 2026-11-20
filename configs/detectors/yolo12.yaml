@@ -1,0 +1,37 @@
+name: "YOLO12"
+type: "ultralytics_yolo"
+variants:
+  n:
+    weights: "yolo12n.pt"
+    run_path: "runs/detect/yolo12n"
+    params: 2600000
+    batch_size: 16
+  s:
+    weights: "yolo12s.pt"
+    run_path: "runs/detect/yolo12s"
+    params: 9300000
+    batch_size: 32
+  m:
+    weights: "yolo12m.pt"
+    run_path: "runs/detect/yolo12m"
+    params: 20200000
+    batch_size: 16
+  l:
+    weights: "yolo12l.pt"
+    run_path: "runs/detect/yolo12l"
+    params: 26400000
+    batch_size: 8
+  x:
+    weights: "yolo12x.pt"
+    run_path: "runs/detect/yolo12x"
+    params: 59100000
+    batch_size: 4
+inference:
+  imgsz: 640
+  conf: 0.25
+  iou: 0.45
+  device: "cuda"
+dataset:
+  data_yaml: "1-class-weapon-dataset-2/data.yaml"
+  num_classes: 1
+  classes: ["weapon"]

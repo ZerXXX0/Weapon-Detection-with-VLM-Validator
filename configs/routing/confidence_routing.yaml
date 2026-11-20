@@ -1,0 +1,26 @@
+name: "confidence_based_routing"
+thresholds:
+  grid_step: 0.05
+  grid_range: [0.05, 0.95]
+  default_low_cutoff: 0.25
+  default_high_bypass: 0.75
+budgets:
+  low_budget:
+    description: "Minimize VLM invocations, prioritize latency (high bypass threshold, high cutoff)"
+    cutoff_threshold: 0.40
+    bypass_threshold: 0.60
+    target_invocation_rate: 15.0  # ~15% candidate invocations
+  medium_budget:
+    description: "Balanced detection performance and compute (standard research baseline)"
+    cutoff_threshold: 0.25
+    bypass_threshold: 0.75
+    target_invocation_rate: 50.0  # ~50-80% candidate invocations
+  high_budget:
+    description: "Maximum verification coverage, prioritize precision and FP rejection"
+    cutoff_threshold: 0.15
+    bypass_threshold: 0.90
+    target_invocation_rate: 90.0  # ~90% candidate invocations
+policies:
+  - "c < cutoff_threshold: Discarded as detector noise"
+  - "cutoff_threshold <= c < bypass_threshold: Sent to VLM verification"
+  - "c >= bypass_threshold: Auto-approved as Weapon (Bypasses VLM)"

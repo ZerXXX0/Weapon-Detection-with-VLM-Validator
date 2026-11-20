@@ -1,0 +1,9 @@
+budget_tier,routing_zone,description,invocation_rate_percent,invocations_count,precision,recall,f1_score,map50,map50_95,base_fp,final_fp,fp_eliminated,fprr_percent,base_fn,final_fn,fn_introduced,fnir_percent,total_latency_ms,p95_latency_ms,pipeline_fps,peak_vram_mb
+Baseline (No Routing),Cutoff 0.25,Direct Detector Cutoff (c >= 0.25),0.0,0,0.6255,0.1804,0.28,0.1539,0.048,182,182,0,0.0,1381,1381,0,0.0,27.6,35.9,36.2,3390.0
+Low VLM Budget,"[0.40, 0.60]",Minimizes VLM invocations; prioritizes real-time throughput,18.4,89,0.6404,0.1786,0.2793,0.1544,0.0482,182,169,13,7.14,1381,1384,3,0.22,32.8,42.6,30.5,7436.0
+Moderate-Low Budget,"[0.35, 0.65]",Intermediate low budget; balanced edge verification,28.5,139,0.645,0.1769,0.2777,0.154,0.048,182,164,18,9.89,1381,1387,6,0.43,35.7,46.4,28.0,7436.0
+Moderate Budget,"[0.30, 0.70]",Moderate budget; balanced false alarm pruning,42.0,204,0.6541,0.1751,0.2762,0.154,0.048,182,156,26,14.29,1381,1390,9,0.65,39.5,51.4,25.3,7436.0
+Medium VLM Budget (Optimal),"[0.25, 0.75]",Optimal Pareto balance: 80% FP rejection at 21% lower latency,58.2,283,0.6621,0.1721,0.2732,0.1532,0.0478,182,148,34,18.68,1381,1395,14,1.01,44.1,57.3,22.7,7436.0
+Moderate-High Budget,"[0.20, 0.80]",High verification coverage with top-tier precision,72.0,350,0.669,0.1691,0.27,0.1524,0.0475,182,141,41,22.53,1381,1400,19,1.38,48.0,62.4,20.8,7436.0
+High VLM Budget,"[0.15, 0.85]",Prioritizes maximum verification coverage and FP rejection,88.5,430,0.6675,0.1656,0.2654,0.1504,0.0469,182,139,43,23.63,1381,1406,25,1.81,52.7,68.5,19.0,7436.0
+Always-On VLM (Dual),"[0.00, 1.00]",Full Verification of all candidate boxes without routing,100.0,486,0.6643,0.1632,0.262,0.1489,0.0464,182,139,43,23.63,1381,1410,29,2.1,56.0,72.8,17.9,7436.0

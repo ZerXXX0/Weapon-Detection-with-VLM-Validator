@@ -1,0 +1,43 @@
+name: Qwen2-VL-2B
+model_id: Qwen/Qwen2-VL-2B-Instruct
+family: Qwen2-VL
+model_class: Qwen2VLForConditionalGeneration
+parameters_b: 2.2
+adapters:
+  single: adapters/vlm/qwen2_vl_2b_single
+  dual: adapters/vlm/qwen2_vl_2b_dual
+quantization:
+  load_in_4bit: true
+  bnb_4bit_compute_dtype: float16
+  bnb_4bit_use_double_quant: true
+lora:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+processor:
+  min_pixels: 65536
+  max_pixels: 589824
+training:
+  epochs: 10
+  batch_size: 1
+  grad_accum: 8
+  learning_rate: 5.0e-05
+  warmup_steps: 100
+  weight_decay: 0.01
+  margin_ratio: 0.2
+dataset:
+  data_dir: 2-class-weapon-dataset-3
+  train_json: Dataset Annotation-20260807T120404Z-1-001-20261117T042214Z-1-001/Dataset
+    Annotation-20260807T120404Z-1-001/Dataset Annotation/train.json
+  valid_json: Dataset Annotation-20260807T120404Z-1-001-20261117T042214Z-1-001/Dataset
+    Annotation-20260807T120404Z-1-001/Dataset Annotation/valid.json
+  test_json: Dataset Annotation-20260807T120404Z-1-001-20261117T042214Z-1-001/Dataset
+    Annotation-20260807T120404Z-1-001/Dataset Annotation/test.json

@@ -1,36 +1,80 @@
-# Python / Environment / Cache
+# =============================================================================
+# Python, Virtual Environments & Caches
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
 .venv/
 venv/
-__pycache__/
-.pytest_cache/
-*.pyc
+ENV/
+env/
+[Aa]naconda*/
+[Mm]iniconda*/
 
-# Heavy Model Weights & Model Directories
+# =============================================================================
+# Heavy Model Weights, Checkpoints & Adapters (Large Binary Files)
+# =============================================================================
 *.pt
 *.pth
 *.bin
 *.safetensors
 *.onnx
 *.engine
+checkpoint-*/
+
+# LoRA Adapters & Fine-Tuned Model Weights (8+ GB)
+adapters/
 qwen*_vl_model*/
 qwen_vl_model*/
 qwen_vl_smoke*/
 
-# Datasets & Archives
+# =============================================================================
+# Datasets, Label Caches & Archives
+# =============================================================================
+datasets/
 1-class-weapon-dataset*/
 2-class-weapon-dataset*/
 weapon VLM dataset*/
 Dataset Annotation*/
-*.zip
-*.tar
-*.gz
-*.rar
-*.7z
+*.cache
+*.labels.cache
+
+# Raw Annotation JSON Dumps at Root
 test.json
 train.json
 val.json
 valid.json
 
-# Large Annotated Inference Images (Heavy media outputs)
+# Compressed Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# =============================================================================
+# Training Runs, Experiment Logs & Heavy Media Outputs
+# =============================================================================
+runs/
+wandb/
+lightning_logs/
 inference_results*/
 test_inference_results*/
+dual_image_visualizer/
+
+# =============================================================================
+# OS & Editor Artifacts
+# =============================================================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+.vscode/
+.idea/
+*.swp
+*~

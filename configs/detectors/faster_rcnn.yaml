@@ -1,0 +1,20 @@
+name: "Faster_RCNN"
+type: "torchvision_fasterrcnn"
+backbone: "resnet50_fpn"
+pretrained: "FasterRCNN_ResNet50_FPN_Weights.DEFAULT"
+num_classes: 2  # 0: background, 1: weapon
+checkpoint: "runs/detect/faster_rcnn/weights/best.pth"
+params: 41755286
+batch_size: 4
+inference:
+  imgsz: 640
+  conf: 0.25
+  nms_iou: 0.45
+  device: "cuda"
+dataset:
+  train_images: "1-class-weapon-dataset-2/train/images"
+  train_labels: "1-class-weapon-dataset-2/train/labels"
+  val_images: "1-class-weapon-dataset-2/valid/images"
+  val_labels: "1-class-weapon-dataset-2/valid/labels"
+  test_images: "1-class-weapon-dataset-2/test/images"
+  test_labels: "1-class-weapon-dataset-2/test/labels"

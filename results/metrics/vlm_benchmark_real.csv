@@ -1,0 +1,11 @@
+adapter_name,model_name,model_id,context_mode,parameters,total_samples,true_positives,true_negatives,false_positives,false_negatives,ambiguous_responses,accuracy,precision,recall,f1_score,fprr_percent,fnir_percent,avg_latency_ms,p95_latency_ms,throughput_crops_per_sec,peak_gpu_memory_mb
+qwen2_2b_single,Qwen2-VL-2B,Qwen/Qwen2-VL-2B-Instruct,single,1240740352,200,100,0,100,0,0,0.5,0.5,1.0,0.6667,0.0,0.0,2980.71,3071.42,0.34,1652.97
+qwen2_2b_dual,Qwen2-VL-2B,Qwen/Qwen2-VL-2B-Instruct,dual,1240740352,200,100,0,100,0,0,0.5,0.5,1.0,0.6667,0.0,0.0,3023.84,3083.95,0.33,1673.01
+qwen2_7b_single,Qwen2-VL-7B,Qwen/Qwen2-VL-7B-Instruct,single,4732246528,200,96,7,93,4,0,0.515,0.5079,0.96,0.6644,7.0,4.0,3149.76,3270.16,0.32,6088.21
+qwen2_7b_dual,Qwen2-VL-7B,Qwen/Qwen2-VL-7B-Instruct,dual,4732246528,200,100,0,100,0,0,0.5,0.5,1.0,0.6667,0.0,0.0,3173.66,3246.74,0.32,6108.71
+qwen3_2b_single,Qwen3-VL-2B,Qwen/Qwen3-VL-2B-Instruct,single,1238994944,200,97,41,59,3,0,0.69,0.6218,0.97,0.7578,41.0,3.0,3174.41,3347.16,0.32,1741.21
+qwen3_2b_dual,Qwen3-VL-2B,Qwen/Qwen3-VL-2B-Instruct,dual,1238994944,200,98,20,80,2,0,0.59,0.5506,0.98,0.705,20.0,2.0,3202.27,3333.06,0.31,1772.71
+qwen3_4b_single,Qwen3-VL-4B,Qwen/Qwen3-VL-4B-Instruct,single,2448667136,200,96,28,72,4,0,0.62,0.5714,0.96,0.7164,28.0,4.0,4016.41,4216.77,0.25,3159.32
+qwen3_4b_dual,Qwen3-VL-4B,Qwen/Qwen3-VL-4B-Instruct,dual,2448667136,200,98,13,87,2,0,0.555,0.5297,0.98,0.6877,13.0,2.0,4185.84,4319.44,0.24,3224.02
+qwen3_8b_single,Qwen3-VL-8B,Qwen/Qwen3-VL-8B-Instruct,single,5052135664,200,100,7,93,0,0,0.535,0.5181,1.0,0.6826,7.0,0.0,4279.52,4371.39,0.23,6538.63
+qwen3_8b_dual,Qwen3-VL-8B,Qwen/Qwen3-VL-8B-Instruct,dual,5052135664,200,98,41,59,2,0,0.695,0.6242,0.98,0.7626,41.0,2.0,4152.1,4341.13,0.24,6588.99
