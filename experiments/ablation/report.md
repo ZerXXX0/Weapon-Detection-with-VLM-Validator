@@ -1,161 +1,113 @@
-# Experiment 7: Component Ablation Study
+# Experiment 7: Component Ablation Study (2×2 Factorial Analysis)
 
 ## 1. Executive Summary
 
-This experiment isolates the contribution of each architectural component in the proposed weapon detection + VLM validation cascade. All four configurations use the same reference detector (**YOLO26x**) and VLM (**Qwen3-VL-8B Dual-Image** where applicable), evaluated on **1,861 test images**.
+This experiment isolates the individual and joint contributions of the two key architectural mechanisms in the proposed weapon verification pipeline:
+1. **Visual Context Mode**: Single-Image (Full Scene only) vs. Dual-Image (Scene + 20% Zoomed-Out Crop).
+2. **VLM Invocation Policy**: Unrestricted Always-On (100% invocations) vs. Fixed Confidence Routing (Zone $[0.25, 0.75]$, 58.2% invocations).
 
-**Core finding**: The **Dual-Image visual context** is by far the dominant architectural component, responsible for **16.48 of the 18.68 total FPRR percentage points** (88.2% of all false positive reduction). Without it, VLM verification is nearly useless for FP rejection regardless of routing strategy.
+To ensure a strict, unconfounded "apple-to-apple" comparison, we evaluate a **$2 \times 2$ factorial matrix** alongside the standalone detector baseline ($A$), all tested on the primary benchmark reference: **YOLO26x + Qwen3-VL-8B** across **1,861 test images** (1,685 ground-truth weapon instances).
+
+### Core Findings
+
+1. **Dual-Image Context is the Paramount Performance Driver**:
+   - Holding policy constant at Always-On ($B_1 \rightarrow C_1$), Dual-Image context elevates FPRR from **1.65% to 23.63%** ($+21.98\text{ pp}$, a **$14.3\times$ gain**).
+   - Holding policy constant at Confidence Routing ($B_2 \rightarrow C_2$), Dual-Image context elevates FPRR from **2.20% to 18.68%** ($+16.48\text{ pp}$, an **$8.5\times$ gain**).
+   - Single-image verification fails fundamentally because 1024-token scene representations lack high-frequency pixel resolution for small weapon parts (trigger guards, barrels).
+
+2. **Confidence Routing Eliminates Unnecessary Invocations & Protects Recall**:
+   - On the Dual-Image pipeline ($C_1 \rightarrow C_2$), routing drops end-to-end latency from **56.0 ms down to 44.1 ms** (a **21.3% throughput gain** / 1.27× FPS).
+   - Crucially, routing **slashes False Negative Introduction in half**: FNIR drops from **2.10% down to 1.01%** (saving 15 genuine weapon detections from being erroneously overturned by the VLM).
+   - Routing retains **79.1% of the maximum FPRR** (18.68% vs 23.63%) while invoking the VLM on only 58.2% of candidates.
+
+3. **Single-Image Always-On ($B_1$) is Strictly Pareto-Inferior**:
+   - Compared to the detector baseline ($A$), Config $B_1$ reduces precision ($-0.0031$), introduces 9 false negatives, and adds 37.7 ms latency, yielding almost no false positive reduction ($1.65\%$).
 
 ---
 
-## 2. Configurations
+## 2. Factorial Experimental Design
 
-| Config | Architecture | Routing | Context | Crop Margin |
-|:---:|:---|:---:|:---:|:---:|
-| **A** | Base Detector Only | None (cutoff ≥ 0.25) | None | 0% |
-| **B** | Detector + Always-On VLM | 100% invocation | Single-Image (Full Scene) | 0% |
-| **C** | Detector + Routing + VLM | Zone [0.25, 0.75] (58.2%) | Single-Image (Full Scene) | 0% |
-| **D** ← Proposed | Detector + Routing + VLM | Zone [0.25, 0.75] (58.2%) | Dual-Image (Scene + Crop) | +20% |
+```
+                     ┌───────────────────────────┬───────────────────────────┐
+                     │   Single-Image Context    │    Dual-Image Context     │
+                     │       (Full Scene)        │      (Scene + Crop)       │
+┌────────────────────┼───────────────────────────┼───────────────────────────┤
+│ Always-On          │         Config B1         │         Config C1         │
+│ (100% Invocations) │   FPRR: 1.65% | 65.3 ms   │   FPRR: 23.63% | 56.0 ms  │
+├────────────────────┼───────────────────────────┼───────────────────────────┤
+│ Confidence Routing │         Config B2         │      Config C2 (D) 🏆     │
+│ (Zone [0.25, 0.75])│   FPRR: 2.20% | 37.8 ms   │   FPRR: 18.68% | 44.1 ms  │
+└────────────────────┴───────────────────────────┴───────────────────────────┘
+```
 
 ---
 
-## 3. Full Results Table
+## 3. Comprehensive Ablation Benchmark Results
 
-*Reference: YOLO26x, 1,861 test images. Base: TP=304, FP=182, FN=1381, Total GT=1685.*
+*Reference Detector: YOLO26x. Test Set: 1,861 images, 1,685 GT weapons. Base: $\text{TP}=304$, $\text{FP}=182$, $\text{FN}=1381$.*
 *Source: [ablation_study.csv](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/tables/ablation_study.csv)*
 
-| Config | Precision | Recall | F1 | mAP@50 | mAP@50:95 | TP | FP | FN | FP Elim | FPRR (%) | FN Intro | FNIR (%) | Latency (ms) | P95 (ms) | FPS | VRAM (MB) |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **A** | 0.6255 | 0.1804 | 0.2800 | 0.1539 | 0.0480 | 304 | 182 | 1381 | 0 | 0.00% | 0 | 0.00% | 27.6 | 35.9 | 36.2 | 3,390 |
-| **B** | 0.6224 | 0.1751 | 0.2733 | 0.1463 | 0.0456 | 295 | 179 | 1390 | 3 | 1.65% | 9 | 0.65% | 65.3 | 84.9 | 15.3 | 7,436 |
-| **C** | 0.6280 | 0.1780 | 0.2774 | 0.1500 | 0.0467 | 300 | 178 | 1385 | 4 | 2.20% | 4 | 0.29% | 37.8 | 49.1 | 26.5 | 7,436 |
-| **D** 🏆 | **0.6621** | 0.1721 | 0.2732 | 0.1532 | 0.0478 | 290 | **148** | 1395 | **34** | **18.68%** | 14 | 1.01% | 44.1 | 57.3 | 22.7 | **8,250** |
+| Config | Architecture Description | Visual Context | Routing Policy | Inv. Rate (%) | Precision | Recall | F1 | mAP@50 | FP | FP Elim | FPRR (%) | FN Intro | FNIR (%) | Latency (ms) | P95 (ms) | FPS | Peak VRAM (MB) |
+|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **A** | **Base Detector Only** | None | None (Cutoff $\ge 0.25$) | 0.0% | 0.6255 | **0.1804** | **0.2800** | **0.1539** | 182 | 0 | 0.00% | 0 | 0.00% | **27.6** | **35.9** | **36.2** | **3,390** |
+| **B1** | + VLM (Single Always-On) | Single-Image | Always-On (100%) | 100.0% | 0.6224 | 0.1751 | 0.2733 | 0.1463 | 179 | 3 | 1.65% | 9 | 0.65% | 65.3 | 84.9 | 15.3 | 7,436 |
+| **B2** | + VLM (Single + Routing) | Single-Image | Zone $[0.25, 0.75]$ | 58.2% | 0.6280 | 0.1780 | 0.2774 | 0.1500 | 178 | 4 | 2.20% | 4 | 0.29% | 37.8 | 49.1 | 26.5 | 7,436 |
+| **C1** | + VLM (Dual Always-On) | Dual-Image (+20%) | Always-On (100%) | 100.0% | **0.6643** | 0.1632 | 0.2620 | 0.1403 | **139** | **43** | **23.63%** | 29 | 2.10% | 56.0 | 72.8 | 17.9 | 7,436 |
+| **C2** 🏆 | **Proposed Architecture** | **Dual-Image (+20%)** | **Zone $[0.25, 0.75]$** | **58.2%** | **0.6621** | 0.1721 | 0.2732 | 0.1532 | **148** | **34** | **18.68%** | 14 | **1.01%** | **44.1** | **57.3** | **22.7** | **8,250** |
 
 ---
 
-## 4. Incremental Component Analysis
+## 4. Isolated Component Effect Analysis
 
-### 4.1 Component A → B: Adding Always-On VLM (Single-Image)
+### 4.1 Effect of Visual Context (Single vs. Dual-Image)
 
-| Metric | Change |
-|:---|:---:|
-| FP Eliminated | +3 (1.65% FPRR) |
-| FN Introduced | +9 |
-| Precision Delta | −0.0031 (−0.50%) |
-| Latency Overhead | +37.7 ms (+136.6%) |
-| FPS Reduction | −20.9 FPS (−57.7%) |
+Comparing horizontally across rows to isolate context:
 
-**Verdict**: Adding always-on VLM verification with single-image context provides **negligible FP reduction (1.65%)** while introducing more FNs than FPs eliminated and **halving throughput**. Net outcome is negative.
+| Context Comparison | Policy Held Fixed | Single FPRR | Dual FPRR | $\Delta$ FPRR | Single Prec | Dual Prec | $\Delta$ Prec |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Always-On ($B_1 \rightarrow C_1$)** | 100% Invocations | 1.65% | **23.63%** | **+21.98 pp (14.3×)** | 0.6224 | **0.6643** | **+0.0419** |
+| **Routing ($B_2 \rightarrow C_2$)** | Zone $[0.25, 0.75]$ | 2.20% | **18.68%** | **+16.48 pp (8.5×)** | 0.6280 | **0.6621** | **+0.0341** |
 
-### 4.2 Component B → C: Adding Confidence Routing
+**Scientific Interpretation**: Without local cropped patches, the VLM receives downsampled whole-image tokens where small metallic handguns and knives occupy fewer than 20–50 tokens. The model cannot verify fine-grained structural features. Adding the 20% zoomed-out crop supplies full-resolution local detail, unlocking the VLM's ability to discriminate genuine weapons from lookalikes (wallets, phones, belts).
 
-| Metric | Change |
-|:---|:---:|
-| Additional FP Eliminated | +1 (total: 4, +2.20% FPRR) |
-| FN Introduced vs B | −5 (fewer introduced: 4 vs 9) |
-| Precision Delta vs B | +0.0056 |
-| Latency Reduction | −27.5 ms (27.6ms→37.8ms, 42.1% faster than B) |
-| FPS Recovery | +11.2 FPS |
-| Invocation Rate | 58.2% vs 100% |
+### 4.2 Effect of Confidence Routing (Always-On vs. Selective)
 
-**Verdict**: Routing reduces latency dramatically and mitigates FN introduction, but with single-image context **still cannot meaningfully reject FPs** (only 4 total). The critical bottleneck is not routing — it is context quality.
+Comparing vertically within columns to isolate routing:
 
-### 4.3 Component C → D: Switching to Dual-Image Context
+| Routing Comparison | Context Held Fixed | Always-On Latency | Routed Latency | Latency Reduction | Always-On FNIR | Routed FNIR | Recall Protection |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Single-Image ($B_1 \rightarrow B_2$)** | Full Scene | 65.3 ms | 37.8 ms | **-42.1% (1.73× FPS)** | 0.65% | 0.29% | -5 FNs |
+| **Dual-Image ($C_1 \rightarrow C_2$)** | Scene + Crop | 56.0 ms | 44.1 ms | **-21.3% (1.27× FPS)** | 2.10% | **1.01%** | **-15 FNs (52% cut)** |
 
-| Metric | Change |
-|:---|:---:|
-| Additional FP Eliminated | **+30** (total: 34) |
-| **FPRR Gain** | **+16.48 percentage points** (2.20% → 18.68%) |
-| FN Delta | +10 FNs added (additional 0.72% FNIR) |
-| Precision Delta | **+0.0341 (+5.4%)** |
-| Latency Overhead vs C | +6.3 ms (+16.7%) |
-| VRAM Increase | +814 MB (+10.9%) |
-
-**Verdict**: Dual-Image context is the **critical component**. Adding the 20%-padded crop alongside the full scene gives the VLM the pixel-level detail needed to distinguish weapon barrel shapes, trigger guards, and rectangular objects from actual weapons. This single change accounts for **88.2% of total FPRR**.
+**Scientific Interpretation**: Confidence routing solves the two biggest liabilities of Always-On cascades:
+1. **Over-Verification Latency**: Skipping high-confidence true detections ($c \ge 0.75$) eliminates 41.8% of redundant VLM calls.
+2. **False Negative Inflation**: Even fine-tuned VLMs occasionally reject subtle true weapons due to conservative decision thresholds. By guaranteeing immediate passage to high-confidence detector candidates ($c \ge 0.75$), routing protects true weapon recall, cutting FNIR by more than half (2.10% $\rightarrow$ 1.01%).
 
 ---
 
-## 5. Component Contribution Waterfall
-
-| Step | FPRR Accumulated | Marginal Gain | % of Total |
-|:---|:---:|:---:|:---:|
-| **A**: Baseline | 0.00% | — | — |
-| **A→B**: + VLM (Always-On, Single) | 1.65% | +1.65 pp | 8.8% |
-| **B→C**: + Confidence Routing | 2.20% | +0.55 pp | 2.9% |
-| **C→D**: + Dual-Image Context | 18.68% | **+16.48 pp** | **88.2%** |
-
----
-
-## 6. Efficiency Analysis
-
-### 6.1 FPRR per ms Latency Cost (vs Baseline A)
-
-| Config | Latency vs A | FPRR | FPRR / ms Overhead |
-|:---:|:---:|:---:|:---:|
-| B | +37.7 ms | 1.65% | 0.044% / ms |
-| C | +10.2 ms | 2.20% | 0.216% / ms |
-| **D** | **+16.5 ms** | **18.68%** | **1.132% / ms** |
-
-Config D achieves **26× better FPRR efficiency per latency overhead** than Config B, and **5.2× better** than Config C.
-
-### 6.2 FPRR per MB VRAM (vs Baseline A's 3,390 MB)
-
-| Config | VRAM vs A | FPRR | FPRR / 100 MB |
-|:---:|:---:|:---:|:---:|
-| B | +4,046 MB | 1.65% | 0.041% / 100 MB |
-| C | +4,046 MB | 2.20% | 0.054% / 100 MB |
-| **D** | **+4,860 MB** | **18.68%** | **0.384% / 100 MB** |
-
----
-
-## 7. Why Single-Image VLM Fails
-
-The near-zero single-image FPRR (1.65% Always-On, 2.20% Routing) reflects a fundamental limitation: Qwen3-VL-8B, when given only the full scene, cannot reliably identify whether a small suspected weapon region is genuine. The bounding box coordinates provide positional information, but the VLM **cannot resolve fine-grained local features** (trigger shape, barrel diameter, screen edge) in a 1024-token full-scene representation.
-
-Providing the **cropped region at 20% padding** delivers a high-resolution local patch where these features become unambiguous, enabling the VLM's visual reasoning to function as intended.
-
----
-
-## 8. Routing vs Always-On (Single-Image Context)
-
-Confidence routing applied to single-image verification (C vs B):
-
-- **Reduces FNIR by 55%**: 4 FNs vs 9 FNs (routing correctly bypasses high-confidence true weapons)
-- **Cuts latency by 42%**: 37.8 ms vs 65.3 ms
-- **Improves FPS from 15.3 to 26.5** (+73%)
-- **Additional FPRR gain is minimal** (+0.55 pp): routing matters for efficiency, not FP rejection, in single-image mode
-
----
-
-## 9. Data Files
-
-| File | Description |
-|:---|:---|
-| [ablation_study.csv](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/tables/ablation_study.csv) | Full 4-config ablation table |
-| [ablation_study.json](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/metrics/ablation_study.json) | JSON metrics |
-
----
-
-## 10. Visualizations
+## 5. Visualizations
 
 | Plot | Description |
 |:---|:---|
-| [ablation_component_gains.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_component_gains.png) | 4-panel: FPRR, Precision, Latency, FP Eliminated per config |
-| [ablation_waterfall.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_waterfall.png) | Waterfall: incremental FPRR gain from each component |
-| [ablation_tradeoff.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_tradeoff.png) | Precision vs Latency + FPRR vs FNIR scatter |
-| [ablation_vram_vs_fprr.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_vram_vs_fprr.png) | VRAM footprint vs FPRR per config |
-| [ablation_radar.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_radar.png) | Radar chart: 5-metric profile per config |
+| [ablation_component_gains.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_component_gains.png) | 4-panel: FPRR, Precision, Latency, FP Eliminated across all 5 configurations |
+| [ablation_waterfall.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_waterfall.png) | Factorial comparison: Visual Context Effect (Left) and Routing Latency Reduction (Right) |
+| [ablation_tradeoff.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_tradeoff.png) | Precision vs Latency + FPRR vs FNIR trade-off space |
+| [ablation_vram_vs_fprr.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_vram_vs_fprr.png) | Peak VRAM consumption vs False Positive Rejection Rate |
+| [ablation_radar.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_radar.png) | Full 5-metric radar profile across all configurations |
 
 ---
 
-## 11. Conclusions
+## 6. Data Files
 
-1. **Dual-Image context is the indispensable component**: It contributes 16.48 of 18.68 total FPRR percentage points (88.2%). All other components combined contribute only 11.8%.
+| File | Description |
+|:---|:---|
+| [ablation_study.csv](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/tables/ablation_study.csv) | Full 5-configuration ablation data table |
+| [ablation_study.json](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/metrics/ablation_study.json) | JSON metrics format |
 
-2. **VLM without crop context is counterproductive when Always-On**: Config B is strictly worse than Config A on precision (−0.0031), introduces 9 FNs, and costs 37.7 ms with only 1.65% FPRR — a poor trade-off.
+---
 
-3. **Confidence routing is essential for efficiency, not accuracy**: Routing reduces latency by 42% and FNs by 55% (vs Always-On) but adds only 0.55% additional FPRR in single-image mode. Its primary value is computational savings.
+## 7. Conclusions
 
-4. **The proposed architecture (Config D) achieves the best precision** (0.6621 vs baseline 0.6255, +5.9%) with acceptable FNIR (1.01%) at a 44.1 ms E2E latency — a viable deployment configuration.
-
-5. **Config D is Pareto-superior to Config B**: It achieves 11.3× more FP rejection at 32% lower latency and only 10.9% more VRAM, making always-on single-image verification obsolete.
+1. **Dual-Image context is the indispensable enabler**: It accounts for over 88% of all false positive elimination. Without crop-level visual context, VLM verification provides negligible value ($<2.2\%$ FPRR).
+2. **Confidence routing is an essential systems optimization**: It delivers a **21.3% latency reduction** while halving false negative errors (FNIR: $2.10\% \rightarrow 1.01\%$), capturing 79% of maximum possible FPRR.
+3. **The Proposed Architecture ($C_2$) is the optimal Pareto balance**: Elevating baseline precision from $0.6255 \rightarrow 0.6621$ and eliminating 34 false positives with minimal throughput impact (44.1 ms, 22.7 FPS).

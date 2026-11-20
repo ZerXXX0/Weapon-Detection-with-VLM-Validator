@@ -68,6 +68,12 @@ inference_results*/
 test_inference_results*/
 dual_image_visualizer/
 
+# Plot Visualizations & Images (Keep repo lightweight and text/code-only)
+results/visualizations/
+*.png
+*.jpg
+*.jpeg
+
 # =============================================================================
 # OS & Editor Artifacts
 # =============================================================================

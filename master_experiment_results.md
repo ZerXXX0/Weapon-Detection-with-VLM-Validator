@@ -267,22 +267,27 @@ This document consolidates all empirical measurements and experimental benchmark
 
 ## 7. Architectural Ablation Study (Experiment 7)
 
-*Isolating the contribution of each component on YOLO26x + Qwen3-VL-8B, 1,861 test images.*
+*Isolating the individual and joint contributions of Visual Context (Single vs. Dual-Image) and Invocation Policy (Always-On vs. Routing) via a $2 \times 2$ factorial matrix on YOLO26x + Qwen3-VL-8B across 1,861 test images.*
 *Source: [ablation_study.csv](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/tables/ablation_study.csv)*
 
-| Config | Architecture | Routing | Context | Precision | Recall | F1 | mAP@50 | FP | FP Elim | FPRR (%) | FN Intro | FNIR (%) | Latency (ms) | P95 (ms) | FPS | VRAM (MB) |
+| Config | Architecture Description | Visual Context | Routing Policy | Precision | Recall | F1 | mAP@50 | FP | FP Elim | FPRR (%) | FN Intro | FNIR (%) | Latency (ms) | P95 (ms) | FPS | Peak VRAM (MB) |
 |:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **A** | Base Detector Only | None | None | 0.6255 | **0.1804** | **0.2800** | 0.1539 | 182 | 0 | 0.00% | 0 | 0.00% | **27.6** | 35.9 | **36.2** | **3,390** |
-| **B** | +Always-On VLM | 100% | Single-Image | 0.6224 | 0.1751 | 0.2733 | 0.1463 | 179 | 3 | 1.65% | 9 | 0.65% | 65.3 | 84.9 | 15.3 | 7,436 |
-| **C** | +Routing + VLM | Zone [0.25,0.75] | Single-Image | 0.6280 | 0.1780 | 0.2774 | 0.1500 | 178 | 4 | 2.20% | 4 | 0.29% | 37.8 | 49.1 | 26.5 | 7,436 |
-| **D** 🏆 | **Proposed Architecture** | **Zone [0.25,0.75]** | **Dual-Image +20%** | **0.6621** | 0.1721 | 0.2732 | 0.1532 | **148** | **34** | **18.68%** | 14 | 1.01% | 44.1 | 57.3 | 22.7 | 8,250 |
+| **A** | **Base Detector Only** | None | None (Cutoff $\ge 0.25$) | 0.6255 | **0.1804** | **0.2800** | **0.1539** | 182 | 0 | 0.00% | 0 | 0.00% | **27.6** | **35.9** | **36.2** | **3,390** |
+| **B1** | + VLM (Single Always-On) | Single-Image | Always-On (100%) | 0.6224 | 0.1751 | 0.2733 | 0.1463 | 179 | 3 | 1.65% | 9 | 0.65% | 65.3 | 84.9 | 15.3 | 7,436 |
+| **B2** | + VLM (Single + Routing) | Single-Image | Zone $[0.25, 0.75]$ | 0.6280 | 0.1780 | 0.2774 | 0.1500 | 178 | 4 | 2.20% | 4 | 0.29% | 37.8 | 49.1 | 26.5 | 7,436 |
+| **C1** | + VLM (Dual Always-On) | Dual-Image (+20%) | Always-On (100%) | **0.6643** | 0.1632 | 0.2620 | 0.1403 | **139** | **43** | **23.63%** | 29 | 2.10% | 56.0 | 72.8 | 17.9 | 7,436 |
+| **C2** 🏆 | **Proposed Architecture** | **Dual-Image (+20%)** | **Zone $[0.25, 0.75]$** | **0.6621** | 0.1721 | 0.2732 | 0.1532 | **148** | **34** | **18.68%** | 14 | **1.01%** | **44.1** | **57.3** | **22.7** | **8,250** |
 
-**Component contributions to FPRR**:
-- A→B (+VLM Always-On Single): +1.65 pp (8.8% of total)
-- B→C (+Confidence Routing): +0.55 pp (2.9% of total)
-- **C→D (+Dual-Image Context): +16.48 pp (88.2% of total)** ← dominant component
+**Isolated Factorial Effects (Apple-to-Apple Comparisons)**:
+1. **Pure Context Gain (Holding Policy Fixed)**:
+   - Always-On ($B_1 \rightarrow C_1$): $+21.98\text{ pp}$ FPRR gain ($1.65\% \rightarrow 23.63\%$, a **$14.3\times$ improvement**), Precision $+0.0419$.
+   - Confidence Routing ($B_2 \rightarrow C_2$): $+16.48\text{ pp}$ FPRR gain ($2.20\% \rightarrow 18.68\%$, an **$8.5\times$ improvement**), Precision $+0.0341$.
+2. **Pure Routing Effect (Holding Context Fixed on Dual-Image)**:
+   - Always-On vs. Routing ($C_1 \rightarrow C_2$): **Latency drops by 21.3%** ($56.0 \rightarrow 44.1\text{ ms}$, $1.27\times$ speedup).
+   - **False Negative Introduction cut in half**: FNIR drops from $2.10\% \rightarrow 1.01\%$ (saving 15 genuine weapon detections).
+   - **FPRR Retention**: Captures **$79.1\%$** of the maximum possible false positive reduction ($18.68\%$ vs $23.63\%$) at $58.2\%$ invocation rate.
 
-> Single-image VLM (Config B) is Pareto-inferior to baseline A: −0.0031 precision, −9 TPs, +2.4× latency for only 1.65% FPRR. Config D achieves 11.3× more FP rejection than B at 32% lower latency.
+> **Key Takeaway**: Dual-Image context is the primary driver of accuracy ($88.2\%$ of FPRR gain), while Confidence Routing is the primary driver of operational efficiency (speedup + recall protection). Config $B_1$ (Single Always-On) is strictly Pareto-inferior to baseline $A$.
 
 *Visualizations: [ablation_component_gains.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_component_gains.png) | [ablation_waterfall.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_waterfall.png) | [ablation_tradeoff.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_tradeoff.png) | [ablation_vram_vs_fprr.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_vram_vs_fprr.png) | [ablation_radar.png](file:///C:/Goji/Weapon-Detection-with-VLM-Validator/results/visualizations/ablation_radar.png)*
 
